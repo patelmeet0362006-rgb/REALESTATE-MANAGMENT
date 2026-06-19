@@ -403,7 +403,7 @@ async function renderDashboard(user) {
   `;
 
   // Initialize Feather Icons in newly injected markup
-  if (typeof feather !== "undefined") feather.replace();
+  safeReplaceFeather();
 
   // Tab Navigation Handling
   const navBtns = section.querySelectorAll(".dashboard-nav-btn:not(.logout-btn)");
@@ -477,7 +477,7 @@ async function renderDashboard(user) {
         const saveBtn = settingsForm.querySelector("button[type='submit']");
         saveBtn.disabled = true;
         saveBtn.innerHTML = `<i data-feather="loader" class="shimmer-spin" style="animation: loadingShimmer 1s infinite linear; width: 18px; height: 18px; margin-right: 8px;"></i> Saving...`;
-        if (typeof feather !== "undefined") feather.replace();
+        safeReplaceFeather();
 
         const { error } = await client
           .from(table)
@@ -502,13 +502,13 @@ async function renderDashboard(user) {
         
         saveBtn.disabled = false;
         saveBtn.innerHTML = `<i data-feather="save"></i> <span>Save Changes</span>`;
-        if (typeof feather !== "undefined") feather.replace();
+        safeReplaceFeather();
       } catch (err) {
         showSettingsNotice("error", `Could not save changes: ${accountMessage(err)}`);
         const saveBtn = settingsForm.querySelector("button[type='submit']");
         saveBtn.disabled = false;
         saveBtn.innerHTML = `<i data-feather="save"></i> <span>Save Changes</span>`;
-        if (typeof feather !== "undefined") feather.replace();
+        safeReplaceFeather();
       }
     });
 
@@ -588,7 +588,7 @@ function renderConsultationList(bookings) {
         <a href="consultation.html" class="btn btn-primary" style="margin-top: 1.25rem;">Schedule Consultation</a>
       </div>
     `;
-    if (typeof feather !== "undefined") feather.replace();
+    safeReplaceFeather();
     return;
   }
 
@@ -644,7 +644,7 @@ function renderConsultationList(bookings) {
     `;
   }).join("");
 
-  if (typeof feather !== "undefined") feather.replace();
+  safeReplaceFeather();
 }
 
 function displayDashboardFavorites(user) {
@@ -679,7 +679,7 @@ function displayDashboardFavorites(user) {
         <a href="${browseLink}" class="btn btn-primary" style="margin-top: 1.25rem;">Browse properties</a>
       </div>
     `;
-    if (typeof feather !== "undefined") feather.replace();
+    safeReplaceFeather();
     return;
   }
 
@@ -762,7 +762,7 @@ function displayDashboardFavorites(user) {
     });
   });
 
-  if (typeof feather !== "undefined") feather.replace();
+  safeReplaceFeather();
 }
 
 if (document.readyState === "loading") {

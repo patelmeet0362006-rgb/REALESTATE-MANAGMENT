@@ -152,9 +152,7 @@ function initContactForm() {
     submitBtn.innerHTML = `<i data-feather="loader" class="shimmer-spin" style="animation: loadingShimmer 1s infinite linear; width: 18px; height: 18px; margin-right: 8px;"></i> Sending Message...`;
     
     // Check if feather is defined, if so replace elements
-    if (typeof feather !== 'undefined') {
-      feather.replace();
-    }
+    safeReplaceFeather();
 
     try {
       const name = nameInput.value.trim();
@@ -186,9 +184,7 @@ function initContactForm() {
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnText;
-      if (typeof feather !== 'undefined') {
-        feather.replace();
-      }
+      safeReplaceFeather();
     }
   });
 

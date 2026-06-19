@@ -95,7 +95,7 @@ function renderFavorites() {
         <a href="index.html#properties" class="btn btn-primary" style="margin-top: 1.25rem;">Browse Properties</a>
       </div>
     `;
-    if (typeof feather !== "undefined") feather.replace();
+    safeReplaceFeather();
     return;
   }
 
@@ -104,7 +104,7 @@ function renderFavorites() {
     button.addEventListener("click", () => removeFavorite(Number(button.dataset.removeFavorite)));
   });
 
-  if (typeof feather !== "undefined") feather.replace();
+  safeReplaceFeather();
 }
 
 function propertyCard(property) {

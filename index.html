@@ -554,7 +554,7 @@
   <!-- Script Initializations -->
   <script>
     // Initialize feather icons right away
-    feather.replace();
+    if (typeof feather !== "undefined") feather.replace();
   </script>
   <!-- Supabase Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

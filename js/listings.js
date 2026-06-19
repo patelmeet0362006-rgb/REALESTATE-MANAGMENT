@@ -233,7 +233,7 @@ function renderListings(properties) {
         <p>Try broadening your price range or adjusting your keyword search.</p>
       </div>
     `;
-    feather.replace();
+    safeReplaceFeather();
     return;
   }
 
@@ -314,7 +314,7 @@ function renderListings(properties) {
     listingsGrid.appendChild(card);
   });
 
-  feather.replace();
+  safeReplaceFeather();
 }
 
 /**

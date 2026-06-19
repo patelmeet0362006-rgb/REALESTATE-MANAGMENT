@@ -111,7 +111,7 @@ function initBookingForm() {
     submitBtn.disabled = true;
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = `<i data-feather="loader" class="shimmer-spin" style="animation: loadingShimmer 1s infinite linear; width: 18px; height: 18px; margin-right: 8px;"></i> Booking consultation...`;
-    if (typeof feather !== "undefined") feather.replace();
+    safeReplaceFeather();
     
     try {
       const { error } = await client
@@ -144,7 +144,7 @@ function initBookingForm() {
           </a>
         `;
         notification.appendChild(linkBlock);
-        if (typeof feather !== "undefined") feather.replace();
+        safeReplaceFeather();
       }
       
     } catch (err) {
@@ -152,7 +152,7 @@ function initBookingForm() {
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
-      if (typeof feather !== "undefined") feather.replace();
+      safeReplaceFeather();
     }
   });
   

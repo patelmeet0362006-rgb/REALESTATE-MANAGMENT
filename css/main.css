@@ -621,71 +621,97 @@ a {
     display: none;
   }
   
+  /* Keep nav-actions visible in the header on mobile/tablet */
   .nav-actions {
-    display: none;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1001;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    align-items: stretch;
-    min-width: 0;
-    padding: 1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
-    background-color: var(--bg-secondary);
-    border-top: 1px solid var(--border-color);
-    box-shadow: 0 -12px 28px rgba(15, 22, 36, 0.12);
+    display: flex;
+    position: static;
+    box-shadow: none;
+    background: none;
+    border-top: none;
+    padding: 0;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    margin-left: auto;
   }
 
-  .nav-menu.active + .nav-actions {
-    display: grid;
-  }
-
-  .nav-actions .nav-link {
-    margin: 0;
-    justify-content: center;
-    background-color: var(--bg-tertiary);
+  /* Hide contact text link and Schedule button in mobile header */
+  .nav-actions > .nav-link,
+  .nav-actions #header-schedule-btn,
+  .nav-actions .btn-outline:not(.account-dropdown-btn) {
+    display: none !important;
   }
 
   .nav-actions .btn,
   .nav-actions .account-dropdown-wrapper,
   .nav-actions .account-dropdown-btn,
   .nav-actions .theme-toggle {
-    width: 100%;
+    width: auto;
   }
 
+  /* Circular styled Theme Toggle for header */
   .nav-actions .theme-toggle {
-    height: 46px;
-    border-radius: var(--radius-md);
-    background-color: var(--bg-tertiary);
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: var(--radius-full) !important;
+    background-color: transparent !important;
+    border: 1px solid var(--border-color) !important;
     box-shadow: none;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
   .account-dropdown-wrapper {
     margin-left: 0;
   }
 
-  .account-dropdown-btn {
+  /* Circular profile button */
+  .nav-actions .account-dropdown-btn {
+    height: 40px !important;
+    width: 40px !important;
+    padding: 0 !important;
+    border-radius: var(--radius-full) !important;
+    display: inline-flex !important;
+    align-items: center;
     justify-content: center;
-    height: 46px;
-    border-radius: var(--radius-md);
-    font-size: 0.95rem;
+    font-size: 0;
   }
 
-  .account-dropdown-menu {
-    position: static;
-    width: 100%;
-    min-width: 0;
-    margin-top: 0.5rem;
-    box-shadow: none;
-    transform: none;
+  /* Hide the text and down-arrow in the mobile account button, show only user icon */
+  .nav-actions .account-dropdown-btn #account-btn-text,
+  .nav-actions .account-dropdown-btn svg:last-of-type,
+  .nav-actions .account-dropdown-btn i:last-of-type {
+    display: none !important;
   }
-  
-  .nav-actions #header-schedule-btn {
-    display: inline-flex !important;
-    height: 46px;
-    font-size: 0.95rem;
+
+  .nav-actions .account-dropdown-btn svg:first-of-type,
+  .nav-actions .account-dropdown-btn i:first-of-type {
+    margin: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* Hide dropdown menu in header since mobile uses slide-out drawer sidebar */
+  .account-dropdown-menu {
+    display: none !important;
+  }
+
+  /* Styling for mobile nav list items */
+  .mobile-only-item {
+    display: block;
+    width: 100%;
+  }
+
+  .mobile-only-item .nav-link {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding: 0.95rem 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .mobile-only-item .nav-link:hover {
+    background-color: var(--primary-light);
   }
 
   .header:not(.scrolled) .logo-link,

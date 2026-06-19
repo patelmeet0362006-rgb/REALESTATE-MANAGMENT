@@ -433,7 +433,7 @@ function setupPaymentLogic() {
       notification.style.display = 'none';
       newBtn.disabled = true;
       newBtn.innerHTML = `<i data-feather="loader" class="shimmer-spin" style="animation: loadingShimmer 1s infinite linear; width: 18px; height: 18px; margin-right: 8px;"></i> Verifying UPI Transfer...`;
-      feather.replace();
+      safeReplaceFeather();
 
       setTimeout(async () => {
         // Save payment status in Supabase
@@ -476,7 +476,7 @@ function setupPaymentLogic() {
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<i data-feather="loader" class="shimmer-spin" style="animation: loadingShimmer 1s infinite linear; width: 18px; height: 18px; margin-right: 8px;"></i> Secure Checkout processing...`;
-      feather.replace();
+      safeReplaceFeather();
 
       setTimeout(async () => {
         // Save payment status in Supabase
@@ -499,7 +499,7 @@ function setupPaymentLogic() {
         cardForm.reset();
         submitBtn.disabled = false;
         submitBtn.innerHTML = `<i data-feather="credit-card"></i> Pay ₹12.00 securely`;
-        feather.replace();
+        safeReplaceFeather();
         showDashboard();
       }, 2000);
     });
@@ -588,7 +588,7 @@ function renderPremiumListings() {
         <p>${emptyMsg}</p>
       </div>
     `;
-    feather.replace();
+    safeReplaceFeather();
     return;
   }
 
@@ -659,7 +659,7 @@ function renderPremiumListings() {
     grid.appendChild(card);
   });
 
-  feather.replace();
+  safeReplaceFeather();
 }
 
 /**
