@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login or Register | Apex Urban Realty</title>
+  <meta name="description" content="Login or register for a regular Apex Urban Realty account.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css?v=6.0">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <header class="header scrolled" id="home">
+    <div class="container header-container">
+      <a href="index.html" class="logo-link" aria-label="Apex Urban home">
+        <img src="images/logo.svg" alt="Apex Urban Logo" class="logo-icon">
+        <span>Apex Urban</span>
+      </a>
+
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <li><a href="index.html#home" class="nav-link">Home</a></li>
+        <li><a href="index.html#properties" class="nav-link">Properties</a></li>
+        <li><a href="favorites.html" class="nav-link">Favorites</a></li>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="index.html#contact" class="nav-link">Contact</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+          <i data-feather="moon" class="moon-icon"></i>
+          <i data-feather="sun" class="sun-icon"></i>
+        </button>
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle Navigation Menu">
+        <i data-feather="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--header-height) + 2rem); min-height: 85vh;">
+    <section class="section" id="account-section">
+      <div class="container" id="account-container" style="max-width: 560px;">
+        <div class="section-header" id="account-section-header" style="margin-bottom: 2rem;">
+          <span class="section-tag">Regular Account</span>
+          <h1 class="section-title" style="font-size: 2.15rem;">Login or Register</h1>
+          <p class="section-subtitle">Use this account to save and open your favorite property list.</p>
+        </div>
+
+        <div class="contact-form-panel glass-panel reveal active">
+          <div class="search-tabs favorites-auth-tabs">
+            <button type="button" class="search-tab active" id="tab-login">Login</button>
+            <button type="button" class="search-tab" id="tab-register">Register</button>
+          </div>
+
+          <div class="form-notification" id="auth-notification"></div>
+
+          <form id="auth-login-form" autocomplete="on">
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" class="form-control" placeholder="yourname@gmail.com" autocomplete="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" class="form-control" placeholder="Password" autocomplete="current-password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary favorites-auth-submit">
+              <i data-feather="log-in"></i>
+              <span>Login</span>
+            </button>
+          </form>
+
+          <form id="auth-register-form" autocomplete="on" style="display: none;">
+            <div class="form-group">
+              <label for="register-name">Full Name</label>
+              <input type="text" id="register-name" class="form-control" placeholder="John Patel" autocomplete="name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="register-email">Email Address</label>
+              <input type="email" id="register-email" class="form-control" placeholder="john@gmail.com" autocomplete="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" class="form-control" placeholder="Minimum 6 characters" autocomplete="new-password" required>
+            </div>
+
+            <div class="form-group">
+              <label for="register-confirm">Confirm Password</label>
+              <input type="password" id="register-confirm" class="form-control" placeholder="Re-enter password" autocomplete="new-password" required>
+            </div>
+
+            <button type="submit" class="btn btn-secondary favorites-auth-submit">
+              <i data-feather="user-plus"></i>
+              <span>Create Account</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Apex Urban Realty. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    if (typeof feather !== "undefined") feather.replace();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="backend/supabase.js?v=6.0"></script>
+  <script src="js/main.js?v=6.0"></script>
+  <script src="js/account.js?v=1.0"></script>
+</body>
+</html>

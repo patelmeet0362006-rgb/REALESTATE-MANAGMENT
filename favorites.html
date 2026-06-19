@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favorite Property List | Apex Urban Realty</title>
+  <meta name="description" content="View your saved favorite property list.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css?v=6.0">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <header class="header scrolled" id="home">
+    <div class="container header-container">
+      <a href="index.html" class="logo-link" aria-label="Apex Urban home">
+        <img src="images/logo.svg" alt="Apex Urban Logo" class="logo-icon">
+        <span>Apex Urban</span>
+      </a>
+
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <li><a href="index.html#home" class="nav-link">Home</a></li>
+        <li><a href="index.html#properties" class="nav-link">Properties</a></li>
+        <li><a href="index.html#calculator" class="nav-link">Mortgage Calc</a></li>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="index.html#contact" class="nav-link">Contact</a>
+
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+          <i data-feather="moon" class="moon-icon"></i>
+          <i data-feather="sun" class="sun-icon"></i>
+        </button>
+
+        <div class="account-dropdown-wrapper" id="account-dropdown-wrapper">
+          <button class="btn btn-outline account-dropdown-btn" id="account-dropdown-btn" aria-label="My Account Menu" aria-expanded="false" aria-haspopup="true">
+            <i data-feather="user" style="width: 16px; height: 16px;"></i>
+            <span id="account-btn-text">My Account</span>
+            <i data-feather="chevron-down" style="width: 12px; height: 12px;"></i>
+          </button>
+
+          <div class="account-dropdown-menu" id="account-dropdown-menu" role="menu">
+            <a href="account.html" class="account-dropdown-item" role="menuitem">
+              <i data-feather="log-in" style="width: 16px; height: 16px;"></i>
+              <span>Login / Register</span>
+            </a>
+            <a href="favorites.html" class="account-dropdown-item" role="menuitem">
+              <i data-feather="heart" style="width: 16px; height: 16px;"></i>
+              <span>My Favorite Property List</span>
+            </a>
+            <a href="premium.html" class="account-dropdown-item" role="menuitem">
+              <i data-feather="award" style="width: 16px; height: 16px;"></i>
+              <span>Premium Property</span>
+            </a>
+          </div>
+        </div>
+
+        <button class="btn btn-outline" id="auth-logout-btn" type="button">Log Out</button>
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle Navigation Menu">
+        <i data-feather="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--header-height) + 2rem); min-height: 85vh;">
+    <section class="section" id="favorites-dashboard-section">
+      <div class="container">
+        <div class="section-header" style="max-width: 820px; margin-bottom: 3rem;">
+          <span class="section-tag">Saved Properties</span>
+          <h1 class="section-title" id="welcome-user-heading">My Favorite Property List</h1>
+          <p class="section-subtitle" id="favorites-dashboard-subtitle">Your saved regular properties appear here.</p>
+        </div>
+
+        <div class="form-notification" id="favorites-notification"></div>
+        <div class="listings-grid" id="favorites-listings-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="index.html" class="logo-link" style="margin-bottom: 1rem;">
+            <img src="images/logo.svg" alt="Apex Urban Logo" class="logo-icon">
+            <span>Apex Urban</span>
+          </a>
+          <p>Elevating real estate acquisitions to an art form across India's premier markets.</p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Services</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#properties">Buy Property</a></li>
+            <li><a href="index.html#properties">Rent Property</a></li>
+            <li><a href="premium.html">Premium Property</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home">About Us</a></li>
+            <li><a href="index.html#testimonials">Reviews</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom" style="margin-top: 3rem;">
+        <p>&copy; 2026 Apex Urban Realty. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="account-sidebar-overlay" id="account-sidebar-overlay"></div>
+  <div class="account-sidebar" id="account-sidebar">
+    <button class="close-sidebar-btn" id="close-sidebar-btn" aria-label="Close Account Menu">&times;</button>
+    <div class="account-sidebar-content" id="account-sidebar-content"></div>
+  </div>
+
+  <script>
+    if (typeof feather !== "undefined") feather.replace();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="backend/supabase.js?v=6.0"></script>
+  <script src="js/main.js?v=6.0"></script>
+  <script src="js/favorites.js?v=7.0"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Agent configuration / logs
+.agents/
+.gemini/
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db

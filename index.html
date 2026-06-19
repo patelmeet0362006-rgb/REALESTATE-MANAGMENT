@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Apex Urban Realty | Premium & Luxury Real Estate India</title>
+  <meta name="description" content="Explore premier residential properties, modern penthouses, and luxury villas in India with Apex Urban Realty. Calculate your mortgage and book private tours online.">
+  <meta name="keywords" content="luxury real estate India, villas Mumbai, penthouses Delhi, properties Gujarat, mortgage calculator, premium properties">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Project Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  
+  <!-- Feather Icons (SVG Icons CDN) -->
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header class="header" id="home">
+    <div class="container header-container">
+      <a href="#home" class="logo-link" aria-label="Apex Urban Realty Home">
+        <img src="images/logo.svg" alt="Apex Urban Realty Logo" class="logo-icon">
+        <span>Apex Urban</span>
+      </a>
+      
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#properties" class="nav-link">Properties</a></li>
+        <li><a href="#calculator" class="nav-link">Mortgage Calc</a></li>
+        <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+      </nav>
+      
+      <div class="nav-actions">
+        <!-- Contact Link -->
+        <a href="#contact" class="nav-link">Contact</a>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+          <i data-feather="moon" class="moon-icon"></i>
+          <i data-feather="sun" class="sun-icon"></i>
+        </button>
+        
+        <!-- My Account Dropdown -->
+        <div class="account-dropdown-wrapper" id="account-dropdown-wrapper">
+          <button class="btn btn-outline account-dropdown-btn" id="account-dropdown-btn" aria-label="My Account Menu" aria-expanded="false" aria-haspopup="true">
+            <i data-feather="user" style="width: 16px; height: 16px;"></i>
+            <span id="account-btn-text">My Account</span>
+            <i data-feather="chevron-down" style="width: 12px; height: 12px;"></i>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div class="account-dropdown-menu" id="account-dropdown-menu" role="menu">
+            <a href="account.html" class="account-dropdown-item" role="menuitem">
+              <i data-feather="log-in" style="width: 16px; height: 16px;"></i>
+              <span>Login / Register</span>
+            </a>
+            <a href="favorites.html" class="account-dropdown-item" role="menuitem">
+              <i data-feather="heart" style="width: 16px; height: 16px;"></i>
+              <span>My Favorite Property List</span>
+            </a>
+            <a href="premium.html" class="account-dropdown-item" role="menuitem">
+              <i data-feather="award" style="width: 16px; height: 16px;"></i>
+              <span>Premium Property</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- CTA -->
+        <a href="consultation.html" class="btn btn-primary" id="header-schedule-btn">Schedule Tour</a>
+      </div>
+      
+      <!-- Mobile Toggle -->
+      <button class="mobile-toggle" aria-label="Toggle Navigation Menu">
+        <i data-feather="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" style="background-image: url('images/hero-bg.png');">
+    <div class="container hero-container">
+      <div class="hero-content reveal">
+        <h1 class="hero-title">Discover the Apex of <span>Modern Living</span></h1>
+        <p class="hero-description">We connect discerning clients with India's most exceptional residential real estate. Explore curated villas in Gujarat, architectural statements in Delhi, and sky penthouses in Mumbai.</p>
+        <a href="#properties" class="btn btn-secondary btn-lg hover-glow">Explore Listings</a>
+      </div>
+      
+      <!-- Interactive Search Console -->
+      <div class="search-console glass-panel reveal reveal-delay-2">
+        <div class="search-tabs">
+          <button class="search-tab active" data-tab="buy">Buy</button>
+          <button class="search-tab" data-tab="rent">Rent</button>
+        </div>
+        
+        <form class="search-form">
+          <div class="search-group">
+            <label for="hero-location-input">State / City</label>
+            <div class="search-input-wrapper">
+              <i data-feather="map-pin" class="search-icon-inside"></i>
+              <input type="text" id="hero-location-input" class="search-input" placeholder="e.g. Gujarat, Delhi, Mumbai...">
+            </div>
+          </div>
+          
+          <div class="search-group">
+            <label for="hero-type-select">Property Type</label>
+            <div class="search-input-wrapper search-select-wrapper">
+              <i data-feather="home" class="search-icon-inside"></i>
+              <select id="hero-type-select" class="search-select">
+                <option value="all">All Types</option>
+                <option value="villa">Villas</option>
+                <option value="penthouse">Penthouses</option>
+                <option value="apartment">Apartments</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="search-group price-range-slider-wrapper">
+            <div class="slider-labels">
+              <label>Max Price</label>
+              <span id="hero-price-val" class="calc-val-box">Any Price</span>
+            </div>
+            <input type="range" id="hero-price-slider" class="range-slider" min="5000000" max="100000000" step="2500000" value="100000000">
+          </div>
+          
+          <div class="search-btn-wrapper">
+            <button type="submit" class="btn btn-primary" id="hero-search-submit">
+              <i data-feather="search"></i> Search
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Banner -->
+  <section class="section section-stats bg-secondary">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <div class="stat-num">₹35k Cr+</div>
+          <div class="stat-label">Transactions Completed</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-1">
+          <div class="stat-num">12k+</div>
+          <div class="stat-label">Happy Homeowners</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-num">99.8%</div>
+          <div class="stat-label">Satisfaction Rating</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-num">25+</div>
+          <div class="stat-label">Global Design Awards</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Properties Listing Section -->
+  <section class="section" id="properties">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Featured Properties</span>
+        <h2 class="section-title">Our Signature Collection</h2>
+        <p class="section-subtitle">A handpicked selection of architectural masterpieces representing unparalleled design quality and structural integrity across India.</p>
+      </div>
+      
+      <!-- Category Filter Bar -->
+      <div class="listings-filter-bar reveal">
+        <button class="filter-btn active" data-filter="all">All Properties</button>
+        <button class="filter-btn" data-filter="villa">Villas</button>
+        <button class="filter-btn" data-filter="penthouse">Penthouses</button>
+        <button class="filter-btn" data-filter="apartment">Apartments</button>
+      </div>
+      
+      <!-- Listings Grid (Rendered dynamically by JS) -->
+      <div class="listings-grid reveal reveal-delay-1">
+        <!-- JS inserts listing cards here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Map / Tour Promo -->
+  <section class="section bg-secondary" id="virtual-tour">
+    <div class="container">
+      <div class="interactive-promo-grid">
+        <div class="promo-text reveal">
+          <span class="section-tag">Virtual Showroom</span>
+          <h2 class="section-title" style="margin-top: 0.5rem; font-size: 2.25rem;">Tour Luxury Estates Remotely in Ultra-HD 3D</h2>
+          <p class="section-subtitle" style="margin-bottom: 2rem;">Our immersive virtual technology allows you to walk through high-end spaces with flawless detail, inspect textures, check sunlight directions, and examine views—all from your computer screen.</p>
+          
+          <ul style="list-style: none; margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 1rem;">
+            <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
+              <i data-feather="check" style="color: var(--primary); width: 20px; height: 20px;"></i> Real-time lighting simulations
+            </li>
+            <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
+              <i data-feather="check" style="color: var(--primary); width: 20px; height: 20px;"></i> Accurate architectural measurements
+            </li>
+            <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
+              <i data-feather="check" style="color: var(--primary); width: 20px; height: 20px;"></i> 4K video conferencing inside the tour
+            </li>
+          </ul>
+          
+          <a href="consultation.html" class="btn btn-primary hover-lift">Request Private VR Demo</a>
+        </div>
+        
+        <div class="promo-img-wrapper reveal reveal-delay-1">
+          <img src="images/listing-1.png" alt="3D Virtual Tour Preview" class="promo-preview-img">
+          
+          <!-- Play Video / Tour Button Mock -->
+          <button class="play-tour-btn" aria-label="Launch Virtual Tour">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          
+          <div class="map-dashboard-overlay">
+            <div class="overlay-avatar">
+              <i data-feather="compass" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="overlay-details">
+              <h4>Interactive Compass Map</h4>
+              <p>Explore surrounding neighborhood amenities & transit score.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Mortgage Calculator Section -->
+  <section class="section" id="calculator">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Financial Estimations</span>
+        <h2 class="section-title">Mortgage Calculator</h2>
+        <p class="section-subtitle">Plan your investments with real-time financial updates. Adjust the variables to estimate your custom monthly expenditures.</p>
+      </div>
+      
+      <!-- Calculator Layout -->
+      <div class="calc-container reveal">
+        <div class="calc-inputs">
+          <div class="calc-slider-group">
+            <div class="calc-slider-header">
+              <label for="calc-home-price">Home Value</label>
+              <span id="calc-home-price-val" class="calc-val-box">₹1,20,00,000</span>
+            </div>
+            <input type="range" id="calc-home-price" class="range-slider" min="1000000" max="100000000" step="500000" value="12000000">
+          </div>
+          
+          <div class="calc-slider-group">
+            <div class="calc-slider-header">
+              <label for="calc-down-payment">Down Payment</label>
+              <span id="calc-down-payment-val" class="calc-val-box">₹24,00,000</span>
+            </div>
+            <input type="range" id="calc-down-payment" class="range-slider" min="100000" max="12000000" step="100000" value="2400000">
+          </div>
+          
+          <div class="calc-slider-group">
+            <div class="calc-slider-header">
+              <label for="calc-interest">Interest Rate (Annual)</label>
+              <span id="calc-interest-val" class="calc-val-box">8.5%</span>
+            </div>
+            <input type="range" id="calc-interest" class="range-slider" min="4.0" max="15.0" step="0.1" value="8.5">
+          </div>
+          
+          <div class="calc-slider-group">
+            <div class="calc-slider-header">
+              <label for="calc-term">Loan Term</label>
+              <span id="calc-term-val" class="calc-val-box">20 Years</span>
+            </div>
+            <input type="range" id="calc-term" class="range-slider" min="5" max="30" step="5" value="20">
+          </div>
+        </div>
+        
+        <div class="calc-results-panel">
+          <div class="calc-res-header">
+            <p>Estimated Monthly Expense</p>
+            <span class="calc-monthly-payment" id="calc-monthly-val">₹83,378</span>
+          </div>
+          
+          <div class="calc-breakdown">
+            <!-- P&I -->
+            <div class="breakdown-row">
+              <div class="breakdown-info">
+                <span class="breakdown-label">
+                  <span class="breakdown-dot dot-pi"></span> Principal & Interest
+                </span>
+                <span class="breakdown-val" id="breakdown-pi-val">₹83,378</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-pi" id="fill-pi" style="width: 80%;"></div>
+              </div>
+            </div>
+            
+            <!-- Property Tax -->
+            <div class="breakdown-row">
+              <div class="breakdown-info">
+                <span class="breakdown-label">
+                  <span class="breakdown-dot dot-tax"></span> Property Taxes (Monthly)
+                </span>
+                <span class="breakdown-val" id="breakdown-tax-val">₹12,000</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-tax" id="fill-tax" style="width: 15%;"></div>
+              </div>
+            </div>
+            
+            <!-- Home Insurance -->
+            <div class="breakdown-row">
+              <div class="breakdown-info">
+                <span class="breakdown-label">
+                  <span class="breakdown-dot dot-ins"></span> Home Insurance (Monthly)
+                </span>
+                <span class="breakdown-val" id="breakdown-ins-val">₹3,500</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-ins" id="fill-ins" style="width: 5%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews / Testimonials Section -->
+  <section class="section bg-secondary" id="testimonials">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Client Reviews</span>
+        <h2 class="section-title">Endorsements</h2>
+        <p class="section-subtitle">Read firsthand reviews from luxury property buyers who successfully purchased their dream home with Apex Urban Realty.</p>
+      </div>
+      
+      <!-- Slider Layout -->
+      <div class="testimonial-carousel reveal">
+        <div class="testimonial-track">
+          <div class="testimonial-slide">
+            <div class="testimonial-rating">
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+            </div>
+            <p class="testimonial-text">"The experience of buying our estate through Apex Urban was absolutely seamless. Their representation, off-market network, and digital tools—like the virtual walkthrough—made buying our Bandra West home a dream experience."</p>
+            <div class="testimonial-author">
+              <img src="images/listing-1.png" alt="Sarah J. Portrait" class="author-img">
+              <div class="author-info">
+                <h4>Sarah Jenkins</h4>
+                <p>Purchased Villa in Bandra West, Mumbai</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="testimonial-slide">
+            <div class="testimonial-rating">
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+              <i data-feather="star" class="star-icon"></i>
+            </div>
+            <p class="testimonial-text">"As an investor, efficiency and precise transparency are critical. The mortgage calculator was spot-on, and the agent's professional representation during negotiation of our New Delhi penthouse was outstanding."</p>
+            <div class="testimonial-author">
+              <img src="images/listing-3.png" alt="Marcus K. Portrait" class="author-img">
+              <div class="author-info">
+                <h4>Marcus Vance</h4>
+                <p>Purchased Penthouse in Chanakyapuri, New Delhi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <button class="carousel-nav-btn carousel-nav-btn-prev" aria-label="Previous Testimonial">
+          <i data-feather="chevron-left"></i>
+        </button>
+        <button class="carousel-nav-btn carousel-nav-btn-next" aria-label="Next Testimonial">
+          <i data-feather="chevron-right"></i>
+        </button>
+        
+        <!-- Indicators -->
+        <div class="carousel-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lead Booking / Agent Contact Section -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Get in Touch</span>
+        <h2 class="section-title">Schedule a Consultation</h2>
+        <p class="section-subtitle">Speak with our lead listing advisor to arrange private site viewings, virtual inspections, or query listings.</p>
+      </div>
+      
+      <!-- Contact Grid -->
+      <div class="contact-grid">
+        <!-- Agent Bio Card -->
+        <div class="agent-card glass-panel reveal">
+          <div class="agent-img-wrapper">
+            <img src="images/agent.png" alt="Eleanor Sterling - Lead Real Estate Consultant" class="agent-profile-img">
+          </div>
+          <h3 class="agent-name">Eleanor Sterling</h3>
+          <p class="agent-role">Principal Listing Advisor</p>
+          <p class="agent-bio">With over 15 years experience in luxury residential acquisitions, Eleanor leads our private client services division, specializing in off-market estates and premium luxury acquisitions.</p>
+          
+          <div class="agent-contact-details">
+            <div class="agent-contact-item">
+              <i data-feather="phone" class="agent-contact-icon"></i>
+              <span>+91 98765 43210</span>
+            </div>
+            <div class="agent-contact-item">
+              <i data-feather="mail" class="agent-contact-icon"></i>
+              <span>eleanor@apexurbanrealty.com</span>
+            </div>
+            <div class="agent-contact-item">
+              <i data-feather="map-pin" class="agent-contact-icon"></i>
+              <span>Nariman Point, Mumbai</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Interactive Form -->
+        <div class="contact-form-panel glass-panel reveal reveal-delay-1">
+          <div class="form-notification" id="form-status-msg"></div>
+          
+          <form id="agent-contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Full Name</label>
+                <input type="text" id="contact-name" class="form-control" placeholder="e.g. John Patel">
+              </div>
+              <div class="form-group">
+                <label for="contact-email">Email Address</label>
+                <input type="email" id="contact-email" class="form-control" placeholder="e.g. john@example.com">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-phone">Phone Number</label>
+                <input type="tel" id="contact-phone" class="form-control" placeholder="e.g. +91 99999 00000">
+              </div>
+              <div class="form-group">
+                <label for="contact-interest-type">Interest Type</label>
+                <select id="contact-interest-type" class="form-control">
+                  <option value="buy">Acquiring Property (Buy)</option>
+                  <option value="sell">Listing Property (Sell)</option>
+                  <option value="rent">Renting Property (Rent)</option>
+                  <option value="general">General Consultation</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group form-group-full">
+              <label for="contact-message">Your Message Details</label>
+              <textarea id="contact-message" class="form-control" placeholder="Describe the type of property you are looking for, preferred locations, and any specific requests..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-lg hover-lift hover-glow" style="width: 100%; justify-content: center; height: 50px;">
+              <i data-feather="send"></i> Book Consultation
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      
+      <!-- Contact details ribbon directly above footer contents -->
+      <div class="reveal" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h3 style="font-family: var(--font-heading); font-size: 1.4rem; margin-bottom: 0.35rem;">Direct Executive Inquiries</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">Contact our principal listings desk for private viewings.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; background-color: var(--primary-light); padding: 0.8rem 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--primary-hover); font-weight: 700; color: var(--primary);">
+          <i data-feather="mail"></i>
+          <a href="mailto:mppatel02506@gmail.com" style="color: inherit;">mppatel02506@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="#home" class="logo-link" style="margin-bottom: 1rem;">
+            <img src="images/logo.svg" alt="Apex Urban Logo" class="logo-icon">
+            <span>Apex Urban</span>
+          </a>
+          <p>Elevating real estate acquisitions to an art form. We connect clients with outstanding luxury residences across India's premier markets.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Facebook"><i data-feather="facebook"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter"><i data-feather="twitter"></i></a>
+            <a href="#" class="social-icon" aria-label="Instagram"><i data-feather="instagram"></i></a>
+            <a href="#" class="social-icon" aria-label="Linkedin"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        
+        <!-- Navigation Columns -->
+        <div>
+          <h4 class="footer-heading">Services</h4>
+          <ul class="footer-links">
+            <li><a href="#properties">Buy Property</a></li>
+            <li><a href="#properties">Rent Property</a></li>
+            <li><a href="premium.html">Off-Market Estates</a></li>
+            <li><a href="#contact">Valuation Services</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#home">About Us</a></li>
+            <li><a href="#properties">Our Advisors</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Bottom Section -->
+      <div class="footer-bottom" style="margin-top: 3rem;">
+        <p>&copy; 2026 Apex Urban Realty. All rights reserved.</p>
+        <p>
+          <a href="#" style="margin-right: 1.5rem;">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- My Account Sidebar Panel (Slide out drawer) -->
+  <div class="account-sidebar-overlay" id="account-sidebar-overlay"></div>
+  <div class="account-sidebar" id="account-sidebar">
+    <button class="close-sidebar-btn" id="close-sidebar-btn" aria-label="Close Account Menu">&times;</button>
+    <div class="account-sidebar-content" id="account-sidebar-content">
+      <!-- Content will be rendered dynamically by main.js -->
+    </div>
+  </div>
+
+  <!-- Script Initializations -->
+  <script>
+    // Initialize feather icons right away
+    feather.replace();
+  </script>
+  <!-- Supabase Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="backend/supabase.js"></script>
+  <script src="js/main.js?v=5.0"></script>
+  <script src="js/listings.js?v=5.0"></script>
+  <script src="js/calculator.js?v=2.1"></script>
+  <script src="js/contact.js?v=6.0"></script>
+</body>
+</html>

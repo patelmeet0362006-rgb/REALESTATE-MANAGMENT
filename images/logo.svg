@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <!-- Premium Gradient -->
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <!-- Abstract Premium Building Silhouette / Apex Peak -->
+  <path d="M 20 80 L 20 50 L 50 20 L 80 50 L 80 80 Z" fill="url(#logoGrad)" />
+  <!-- Accent Inner Architectural Line -->
+  <path d="M 50 20 L 50 80" stroke="rgba(255,255,255,0.2)" stroke-width="3" />
+  <!-- Apex Crest / Roof Highlight -->
+  <path d="M 43 27 L 50 20 L 57 27" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Modern Building Window Punchouts -->
+  <rect x="30" y="55" width="10" height="15" rx="2" fill="#ffffff" opacity="0.9" />
+  <rect x="60" y="55" width="10" height="15" rx="2" fill="#ffffff" opacity="0.9" />
+  <!-- Bottom Foundation Bar -->
+  <rect x="15" y="78" width="70" height="4" rx="2" fill="url(#goldGrad)" />
+</svg>
