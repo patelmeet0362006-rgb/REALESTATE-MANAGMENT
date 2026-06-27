@@ -480,3 +480,23 @@ function updateAccountButtonState() {
   }
 }
 window.updateAccountButtonState = updateAccountButtonState;
+
+/**
+ * Handle Admin and Agent panel navigation links
+ * Always clear credentials session before redirecting to force the login gate
+ */
+document.addEventListener('click', (e) => {
+  const adminLink = e.target.closest('.admin-panel-link, .admin-panel-btn');
+  if (adminLink) {
+    e.preventDefault();
+    localStorage.removeItem('apex_admin_session');
+    window.location.href = 'admin.html';
+  }
+  
+  const agentLink = e.target.closest('.agent-panel-link, .agent-panel-btn');
+  if (agentLink) {
+    e.preventDefault();
+    localStorage.removeItem('apex_agent_session');
+    window.location.href = 'agent.html';
+  }
+});

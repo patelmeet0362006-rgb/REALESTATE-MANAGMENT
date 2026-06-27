@@ -20,6 +20,10 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   
+  <!-- Flatpickr Date/Time Picker CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+
   <!-- Feather Icons (SVG Icons CDN) -->
   <script src="https://unpkg.com/feather-icons"></script>
 </head>
@@ -454,6 +458,17 @@
                 </select>
               </div>
             </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-date">Preferred Date</label>
+                <input type="date" id="contact-date" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-time">Preferred Time</label>
+                <input type="time" id="contact-time" class="form-control" required>
+              </div>
+            </div>
             
             <div class="form-group form-group-full">
               <label for="contact-message">Your Message Details</label>
@@ -555,5 +570,36 @@
   <script src="js/listings.js?v=5.0"></script>
   <script src="js/calculator.js?v=2.1"></script>
   <script src="js/contact.js?v=6.0"></script>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Date Picker
+      if(document.getElementById('contact-date')) {
+        flatpickr("#contact-date", {
+          minDate: "today",
+          dateFormat: "Y-m-d",
+          altInput: true,
+          altFormat: "F j, Y",
+          placeholder: "Select Date"
+        });
+      }
+      
+      // Initialize Time Picker
+      if(document.getElementById('contact-time')) {
+        flatpickr("#contact-time", {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: "H:i",
+          altInput: true,
+          altFormat: "h:i K",
+          placeholder: "Select Time",
+          minTime: "09:00",
+          maxTime: "18:00"
+        });
+      }
+    });
+  </script>
 </body>
 </html>

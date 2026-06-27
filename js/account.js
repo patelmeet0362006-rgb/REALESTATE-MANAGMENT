@@ -89,6 +89,15 @@ function bindAccountPage() {
   if (tabLogin) tabLogin.addEventListener("click", () => switchAccountMode("login"));
   if (tabRegister) tabRegister.addEventListener("click", () => switchAccountMode("register"));
 
+  const forgotPasswordLink = accountById("forgot-password-link");
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      clearAccountNotice();
+      showAccountNotice("success", "Password reset instructions have been sent to your email.");
+    });
+  }
+
   accountById("auth-login-form")?.addEventListener("submit", async event => {
     event.preventDefault();
     clearAccountNotice();
@@ -243,6 +252,15 @@ async function renderDashboard(user) {
             <button class="dashboard-nav-btn" data-target="panel-settings">
               <i data-feather="settings"></i>
               <span>Settings</span>
+            </button>
+            <hr class="dashboard-divider">
+            <button class="dashboard-nav-btn agent-panel-btn" style="color: var(--accent);">
+              <i data-feather="briefcase"></i>
+              <span>Agent Panel</span>
+            </button>
+            <button class="dashboard-nav-btn admin-panel-btn" style="color: var(--accent);">
+              <i data-feather="shield"></i>
+              <span>Admin Panel</span>
             </button>
             <hr class="dashboard-divider">
             <button class="dashboard-nav-btn logout-btn" id="dashboard-logout-btn">
