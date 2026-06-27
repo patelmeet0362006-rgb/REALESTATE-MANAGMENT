@@ -698,7 +698,7 @@ a {
 
   /* Styling for mobile nav list items */
   .mobile-only-item {
-    display: block;
+    display: block !important;
     width: 100%;
   }
 
@@ -756,4 +756,121 @@ a {
 }
 .bg-tertiary {
   background-color: var(--bg-tertiary) !important;
+}
+
+/* Left Navigation Sidebar for client-facing desktop layouts */
+.mobile-only-item {
+  display: none !important;
+}
+
+@media (min-width: 1101px) {
+  body:not(.panel-body) {
+    padding-left: 260px;
+  }
+  
+  body:not(.panel-body) .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background-color: var(--bg-secondary) !important;
+    border-right: 1px solid var(--border-color);
+    border-bottom: none !important;
+    box-shadow: var(--shadow-lg) !important;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 2.5rem 1.5rem;
+    overflow-y: auto;
+    transition: none !important;
+  }
+  
+  body:not(.panel-body) .header.scrolled {
+    height: 100vh !important;
+    background-color: var(--bg-secondary) !important;
+  }
+  
+  body:not(.panel-body) .header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    gap: 3rem;
+    padding: 0;
+    max-width: 100%;
+  }
+  
+  body:not(.panel-body) .logo-link {
+    margin-right: 0;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  
+  body:not(.panel-body) .nav-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    width: 100%;
+    flex: 1 1 auto;
+    margin-bottom: auto;
+  }
+  
+  body:not(.panel-body) .nav-menu li {
+    width: 100%;
+    display: block;
+  }
+  
+  body:not(.panel-body) .nav-link {
+    width: 100%;
+    font-size: 1.05rem;
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  body:not(.panel-body) .nav-link::after {
+    bottom: -2px;
+  }
+  
+  body:not(.panel-body) .nav-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 1.25rem;
+    margin-top: auto;
+    flex: 0 0 auto;
+  }
+  
+  body:not(.panel-body) .nav-actions .nav-link {
+    padding: 0.5rem 0;
+    justify-content: flex-start;
+  }
+  
+  body:not(.panel-body) .nav-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  body:not(.panel-body) .account-dropdown-wrapper {
+    width: 100%;
+  }
+  
+  body:not(.panel-body) .account-dropdown-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  body:not(.panel-body) .account-dropdown-menu {
+    top: auto;
+    bottom: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
 }

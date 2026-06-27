@@ -214,11 +214,7 @@ const allPropertiesLookup = {
   5: { title: "Serene Waterfront Haven", page: "index.html#properties" },
   6: { title: "The Obsidian Penthouse", page: "index.html#properties" },
   7: { title: "GIFT Towers Executive Suite", page: "index.html#properties" },
-  8: { title: "Lodi Colony Regency Suite", page: "index.html#properties" },
-  101: { title: "The Raj Mahal Villa", page: "premium.html" },
-  102: { title: "Antilia Skyline Penthouse", page: "premium.html" },
-  103: { title: "The Lodi Palace Sanctuary", page: "premium.html" },
-  104: { title: "Worli Sea Face Horizon Suite", page: "premium.html" }
+  8: { title: "Lodi Colony Regency Suite", page: "index.html#properties" }
 };
 
 /**
@@ -254,9 +250,7 @@ function updateAccountSidebarState() {
 
   try {
     const regularUser = localStorage.getItem('apex_regular_current_user');
-    const premiumUser = localStorage.getItem('apex_current_user');
-    const savedUser = regularUser || premiumUser;
-    const user = savedUser ? JSON.parse(savedUser) : null;
+    const user = regularUser ? JSON.parse(regularUser) : null;
 
     if (user) {
       // User is logged in
@@ -272,7 +266,7 @@ function updateAccountSidebarState() {
             </div>
           </div>
           <span class="section-tag" style="font-size: 0.75rem; padding: 0.2rem 0.6rem; margin-bottom: 0;">
-            ${premiumUser ? 'Premium Member' : 'Standard Member'}
+            Standard Member
           </span>
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
@@ -283,10 +277,6 @@ function updateAccountSidebarState() {
           <a href="favorites.html" class="btn btn-outline" style="justify-content: flex-start; width: 100%;">
             <i data-feather="heart" style="width: 18px; height: 18px;"></i>
             <span>My Favorite Property List</span>
-          </a>
-          <a href="premium.html" class="btn btn-outline" style="justify-content: flex-start; width: 100%;">
-            <i data-feather="award" style="width: 18px; height: 18px;"></i>
-            <span>Premium Property</span>
           </a>
           <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
           <button id="sidebar-logout-btn" class="btn btn-primary" style="background-color: hsl(0, 84%, 60%); justify-content: center; width: 100%;">
@@ -302,8 +292,7 @@ function updateAccountSidebarState() {
         logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
           localStorage.removeItem('apex_regular_current_user');
-          localStorage.removeItem('apex_current_user');
-          if (window.location.pathname.includes('account.html') || window.location.pathname.includes('favorites.html') || window.location.pathname.includes('premium.html') || window.location.pathname.includes('consultation.html')) {
+          if (window.location.pathname.includes('account.html') || window.location.pathname.includes('favorites.html') || window.location.pathname.includes('consultation.html')) {
             window.location.href = 'index.html';
           } else {
             window.location.reload();
@@ -328,10 +317,6 @@ function updateAccountSidebarState() {
           <a href="favorites.html" class="btn btn-outline" style="justify-content: flex-start; width: 100%;">
             <i data-feather="heart" style="width: 18px; height: 18px;"></i>
             <span>My Favorite Property List</span>
-          </a>
-          <a href="premium.html" class="btn btn-outline" style="justify-content: flex-start; width: 100%;">
-            <i data-feather="award" style="width: 18px; height: 18px;"></i>
-            <span>Premium Property</span>
           </a>
         </div>
       `;
@@ -435,9 +420,7 @@ function updateAccountButtonState() {
 
   try {
     const regularUser = localStorage.getItem('apex_regular_current_user');
-    const premiumUser = localStorage.getItem('apex_current_user');
-    const savedUser = regularUser || premiumUser;
-    const user = savedUser ? JSON.parse(savedUser) : null;
+    const user = regularUser ? JSON.parse(regularUser) : null;
     
     // Update button label
     accountText.textContent = user && user.name ? user.name.split(' ')[0] : 'My Account';
@@ -455,10 +438,6 @@ function updateAccountButtonState() {
             <i data-feather="heart" style="width: 16px; height: 16px;"></i>
             <span>My Favorite Property List</span>
           </a>
-          <a href="premium.html" class="account-dropdown-item" role="menuitem">
-            <i data-feather="award" style="width: 16px; height: 16px;"></i>
-            <span>Premium Property</span>
-          </a>
           <hr style="border: none; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
           <a href="#" class="account-dropdown-item" id="nav-logout-btn" role="menuitem" style="color: hsl(0, 84%, 60%);">
             <i data-feather="log-out" style="width: 16px; height: 16px; color: currentColor;"></i>
@@ -472,8 +451,7 @@ function updateAccountButtonState() {
           logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('apex_regular_current_user');
-            localStorage.removeItem('apex_current_user');
-            if (window.location.pathname.includes('account.html') || window.location.pathname.includes('favorites.html') || window.location.pathname.includes('premium.html') || window.location.pathname.includes('consultation.html')) {
+            if (window.location.pathname.includes('account.html') || window.location.pathname.includes('favorites.html') || window.location.pathname.includes('consultation.html')) {
               window.location.href = 'index.html';
             } else {
               window.location.reload();
@@ -490,10 +468,6 @@ function updateAccountButtonState() {
           <a href="favorites.html" class="account-dropdown-item" role="menuitem">
             <i data-feather="heart" style="width: 16px; height: 16px;"></i>
             <span>My Favorite Property List</span>
-          </a>
-          <a href="premium.html" class="account-dropdown-item" role="menuitem">
-            <i data-feather="award" style="width: 16px; height: 16px;"></i>
-            <span>Premium Property</span>
           </a>
         `;
       }

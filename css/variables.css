@@ -1,33 +1,33 @@
 /* variables.css - Design System for Apex Urban Realty */
 
 :root {
-  /* Light Theme Variables */
-  --bg-primary: hsl(210, 20%, 98%);
-  --bg-secondary: hsl(0, 0%, 100%);
-  --bg-tertiary: hsl(210, 16%, 93%);
-  --bg-glass: rgba(255, 255, 255, 0.75);
+  /* Black, White, and Golden Combo Theme */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #141414;
+  --bg-glass: rgba(0, 0, 0, 0.75);
   
-  --text-primary: hsl(215, 25%, 15%);
-  --text-secondary: hsl(215, 16%, 45%);
-  --text-tertiary: hsl(215, 12%, 60%);
-  --text-light: hsl(0, 0%, 100%);
+  --text-primary: #ffffff;
+  --text-secondary: #b5b5b5;
+  --text-tertiary: #707070;
+  --text-light: #ffffff;
   
-  --primary: hsl(220, 85%, 57%); /* Deep Premium Blue */
-  --primary-hover: hsl(220, 90%, 48%);
-  --primary-light: hsl(220, 85%, 95%);
-  --accent: hsl(36, 100%, 50%); /* Amber/Gold Accent */
-  --accent-hover: hsl(36, 100%, 45%);
-  --accent-light: hsl(36, 100%, 95%);
+  --primary: hsl(43, 65%, 52%); /* Metallic Gold */
+  --primary-hover: hsl(43, 75%, 45%);
+  --primary-light: rgba(212, 175, 55, 0.12);
+  --accent: hsl(43, 65%, 52%); /* Gold Accent */
+  --accent-hover: hsl(43, 75%, 45%);
+  --accent-light: rgba(212, 175, 55, 0.15);
   
-  --border-color: hsl(210, 14%, 88%);
-  --border-color-hover: hsl(210, 14%, 78%);
-  --input-bg: hsl(0, 0%, 100%);
+  --border-color: rgba(212, 175, 55, 0.15);
+  --border-color-hover: rgba(212, 175, 55, 0.3);
+  --input-bg: #0a0a0a;
   
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
-  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.9);
+  --shadow-glass: 0 8px 32px 0 rgba(212, 175, 55, 0.05);
   
   /* Fonts */
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -35,9 +35,9 @@
   
   /* Spacing & Sizes */
   --header-height: 80px;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-full: 9999px;
   
   /* Transitions */
@@ -46,31 +46,32 @@
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark Theme Variables */
+/* Dark Theme Variables override to ensure uniformity */
 [data-theme="dark"] {
-  --bg-primary: hsl(215, 28%, 9%);
-  --bg-secondary: hsl(215, 25%, 12%);
-  --bg-tertiary: hsl(215, 22%, 16%);
-  --bg-glass: rgba(15, 22, 36, 0.75);
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #141414;
+  --bg-glass: rgba(0, 0, 0, 0.75);
   
-  --text-primary: hsl(210, 17%, 95%);
-  --text-secondary: hsl(215, 13%, 70%);
-  --text-tertiary: hsl(215, 11%, 50%);
+  --text-primary: #ffffff;
+  --text-secondary: #b5b5b5;
+  --text-tertiary: #707070;
+  --text-light: #ffffff;
   
-  --primary: hsl(217, 91%, 60%);
-  --primary-hover: hsl(217, 95%, 68%);
-  --primary-light: hsl(215, 25%, 18%);
-  --accent: hsl(36, 100%, 55%);
-  --accent-hover: hsl(36, 100%, 65%);
-  --accent-light: hsl(36, 30%, 18%);
+  --primary: hsl(43, 65%, 52%);
+  --primary-hover: hsl(43, 75%, 45%);
+  --primary-light: rgba(212, 175, 55, 0.12);
+  --accent: hsl(43, 65%, 52%);
+  --accent-hover: hsl(43, 75%, 45%);
+  --accent-light: rgba(212, 175, 55, 0.15);
   
-  --border-color: hsl(215, 20%, 20%);
-  --border-color-hover: hsl(215, 20%, 28%);
-  --input-bg: hsl(215, 22%, 15%);
+  --border-color: rgba(212, 175, 55, 0.15);
+  --border-color-hover: rgba(212, 175, 55, 0.3);
+  --input-bg: #0a0a0a;
   
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.15);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.9);
+  --shadow-glass: 0 8px 32px 0 rgba(212, 175, 55, 0.05);
 }

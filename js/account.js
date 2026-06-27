@@ -1,7 +1,6 @@
 /* account.js - Regular and Premium user dashboard & auth logic */
 
 const REGULAR_USER_KEY = "apex_regular_current_user";
-const PREMIUM_USER_KEY = "apex_current_user";
 
 // Properties datasets to render cards in the dashboard
 const REGULAR_PROPERTIES = [
@@ -15,15 +14,7 @@ const REGULAR_PROPERTIES = [
   { id: 8, title: "Lodi Colony Regency Suite", purpose: "rent", price: 82000, location: "Lodi Colony, New Delhi, Delhi", beds: 1, baths: 1.5, area: 950, image: "images/listing-4.png", badge: "hot" }
 ];
 
-const PREMIUM_PROPERTIES = [
-  { id: 101, title: "The Raj Mahal Villa", location: "GIFT City, Gandhinagar, Gujarat", price: 125000000, beds: 6, baths: 8, area: 9500, image: "images/listing-1.png", badge: "Super Premium", purpose: "buy" },
-  { id: 102, title: "Antilia Skyline Penthouse", location: "Altamount Road, Mumbai, Maharashtra", price: 240000000, beds: 4, baths: 5, area: 6800, image: "images/listing-2.png", badge: "Exclusive", purpose: "buy" },
-  { id: 103, title: "The Lodi Palace Sanctuary", location: "Lodi Estate, New Delhi, Delhi", price: 180000000, beds: 5, baths: 6, area: 8200, image: "images/listing-3.png", badge: "Off-Market", purpose: "buy" },
-  { id: 104, title: "Worli Sea Face Horizon Suite", location: "Worli, Mumbai, Maharashtra", price: 110000000, beds: 3, baths: 4, area: 4500, image: "images/listing-4.png", badge: "New Release", purpose: "buy" }
-];
-
 let cachedFavorites = [];
-let isPremiumTabSelected = false; // toggle for premium vs regular favorites
 
 function accountDb() {
   return window.supabaseClient || null;
@@ -187,15 +178,10 @@ function bindAccountPage() {
 function getSessionUser() {
   try {
     const regVal = localStorage.getItem(REGULAR_USER_KEY);
-    const premVal = localStorage.getItem(PREMIUM_USER_KEY);
     
     if (regVal) {
       const user = JSON.parse(regVal);
       user.role = "regular";
-      return user;
-    } else if (premVal) {
-      const user = JSON.parse(premVal);
-      user.role = user.has_paid ? "premium" : "unpaid_premium";
       return user;
     }
     return null;
@@ -236,8 +222,8 @@ async function renderDashboard(user) {
             <div class="dashboard-user-info">
               <h3 class="dashboard-user-name">${user.name}</h3>
               <p class="dashboard-user-email">${user.email}</p>
-              <span class="badge ${user.role === 'premium' ? 'badge-premium' : 'badge-regular'}">
-                ${user.role === 'premium' ? 'Premium Subscriber' : 'Regular Member'}
+              <span class="badge badge-regular">
+                Regular Member
               </span>
             </div>
           </div>
@@ -293,7 +279,7 @@ async function renderDashboard(user) {
               <div class="stat-card">
                 <div class="stat-icon"><i data-feather="award"></i></div>
                 <div class="stat-details">
-                  <span class="stat-num" style="text-transform: capitalize;">${user.role === 'premium' ? 'Premium' : 'Standard'}</span>
+                  <span class="stat-num" style="text-transform: capitalize;">Standard</span>
                   <span class="stat-label">Access Level</span>
                 </div>
               </div>
@@ -305,25 +291,8 @@ async function renderDashboard(user) {
                 <ul class="summary-list">
                   <li><strong>Full Name:</strong> <span>${user.name}</span></li>
                   <li><strong>Email Address:</strong> <span>${user.email}</span></li>
-                  <li><strong>Membership Tier:</strong> <span>${user.role === 'premium' ? 'Premium Subscriber' : 'Standard Member'}</span></li>
+                  <li><strong>Membership Tier:</strong> <span>Standard Member</span></li>
                 </ul>
-                ${user.role !== 'premium' ? `
-                  <div class="upgrade-promo-box">
-                    <div class="promo-text-side">
-                      <h4>Unlock Premium Off-Market Listings</h4>
-                      <p>Upgrade your account to browse exclusive architectural estates, sky penthouses, and private sales across India for a one-time access fee of ₹12.</p>
-                    </div>
-                    <a href="premium.html" class="btn btn-accent btn-sm">Upgrade Account</a>
-                  </div>
-                ` : `
-                  <div class="upgrade-promo-box premium-active">
-                    <div class="promo-text-side">
-                      <h4>VIP Membership Active</h4>
-                      <p>You have full subscriber access to browse and unlock our private off-market signature real estate collection.</p>
-                    </div>
-                    <a href="premium.html" class="btn btn-primary btn-sm">Browse Premium Estates</a>
-                  </div>
-                `}
               </div>
             </div>
           </div>
@@ -336,12 +305,6 @@ async function renderDashboard(user) {
                   <h2 class="dashboard-title">Saved Properties</h2>
                   <p class="dashboard-subtitle">A compilation of properties you saved while exploring the website.</p>
                 </div>
-                ${user.role === 'premium' ? `
-                  <div id="favorites-role-toggle" style="display: flex; gap: 0.5rem; background-color: var(--bg-primary); padding: 4px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-                    <button class="btn btn-sm btn-outline active" id="toggle-favs-regular" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Standard</button>
-                    <button class="btn btn-sm btn-outline" id="toggle-favs-premium" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Premium</button>
-                  </div>
-                ` : ''}
               </div>
             </div>
             
@@ -426,30 +389,10 @@ async function renderDashboard(user) {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       localStorage.removeItem(REGULAR_USER_KEY);
-      localStorage.removeItem(PREMIUM_USER_KEY);
       if (typeof window.updateAccountButtonState === "function") {
         window.updateAccountButtonState();
       }
       window.location.href = "index.html";
-    });
-  }
-
-  // Bind Premium User Favorites toggles if elements exist
-  const toggleReg = section.querySelector("#toggle-favs-regular");
-  const togglePrem = section.querySelector("#toggle-favs-premium");
-  if (toggleReg && togglePrem) {
-    toggleReg.addEventListener("click", () => {
-      toggleReg.classList.add("active");
-      togglePrem.classList.remove("active");
-      isPremiumTabSelected = false;
-      displayDashboardFavorites(user);
-    });
-
-    togglePrem.addEventListener("click", () => {
-      togglePrem.classList.add("active");
-      toggleReg.classList.remove("active");
-      isPremiumTabSelected = true;
-      displayDashboardFavorites(user);
     });
   }
 
@@ -470,8 +413,8 @@ async function renderDashboard(user) {
         return;
       }
 
-      const table = user.role === "regular" ? "regular_users" : "premium_users";
-      const storageKey = user.role === "regular" ? REGULAR_USER_KEY : PREMIUM_USER_KEY;
+      const table = "regular_users";
+      const storageKey = REGULAR_USER_KEY;
 
       try {
         const saveBtn = settingsForm.querySelector("button[type='submit']");
@@ -549,10 +492,9 @@ async function loadDashboardData(user) {
     renderConsultationList(bookings);
 
     // 2. Fetch favorites list
-    // If premium, fetch both standard and premium favorites
     let favQuery = client
       .from("user_favorites")
-      .select("property_id, is_premium")
+      .select("property_id")
       .eq("user_email", user.email);
       
     const { data: favsData, error: favsError } = await favQuery;
@@ -654,29 +596,18 @@ function displayDashboardFavorites(user) {
   const currentEmail = user.email;
   
   // Filter cached favorites based on toggle selection
-  const filteredIds = cachedFavorites
-    .filter(item => {
-      // If user is premium, check isPremiumTabSelected state
-      if (user.role === "premium") {
-        return isPremiumTabSelected ? (item.is_premium === true) : (item.is_premium === false);
-      }
-      // If regular, show only standard favorites
-      return item.is_premium === false;
-    })
-    .map(item => Number(item.property_id));
+  const filteredIds = cachedFavorites.map(item => Number(item.property_id));
 
   // Match against mock data arrays
-  const propertiesPool = isPremiumTabSelected ? PREMIUM_PROPERTIES : REGULAR_PROPERTIES;
-  const filteredProperties = propertiesPool.filter(prop => filteredIds.includes(prop.id));
+  const filteredProperties = REGULAR_PROPERTIES.filter(prop => filteredIds.includes(prop.id));
 
   if (filteredProperties.length === 0) {
-    const browseLink = isPremiumTabSelected ? "premium.html" : "index.html#properties";
     grid.innerHTML = `
       <div class="listings-not-found" style="grid-column: 1 / -1; width: 100%;">
         <i data-feather="heart" style="width: 48px; height: 48px; margin-bottom: 1rem; color: var(--text-tertiary);"></i>
         <h3>No properties favorited.</h3>
         <p>Explore our listings and tap the heart icon on properties you like to save them here.</p>
-        <a href="${browseLink}" class="btn btn-primary" style="margin-top: 1.25rem;">Browse properties</a>
+        <a href="index.html#properties" class="btn btn-primary" style="margin-top: 1.25rem;">Browse properties</a>
       </div>
     `;
     safeReplaceFeather();
@@ -710,7 +641,7 @@ function displayDashboardFavorites(user) {
         
         <div class="listing-details">
           <div class="listing-price-row">
-            <span class="listing-price" style="${isPremiumTabSelected ? 'color: var(--accent);' : ''}">${priceDisplay}</span>
+            <span class="listing-price">${priceDisplay}</span>
           </div>
           <h3 class="listing-title">${prop.title}</h3>
           <div class="listing-location">
@@ -741,13 +672,12 @@ function displayDashboardFavorites(user) {
           .from("user_favorites")
           .delete()
           .eq("user_email", currentEmail)
-          .eq("property_id", propId)
-          .eq("is_premium", isPremiumTabSelected);
+          .eq("property_id", propId);
 
         if (error) throw error;
 
         // Remove from local cache
-        cachedFavorites = cachedFavorites.filter(item => !(item.property_id == propId && item.is_premium === isPremiumTabSelected));
+        cachedFavorites = cachedFavorites.filter(item => item.property_id != propId);
         
         // Update stats
         const favsCountEl = accountById("stat-favs-count");

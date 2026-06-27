@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Dashboard | Apex Urban Realty</title>
+  <meta name="description" content="Apex Urban Realty agent workspace. Review assigned clients, schedule consultations, and manage tasks.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/panels.css">
+
+  <!-- Feather Icons & ChartJS & Supabase SDKs -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="panel-body" data-panel-type="agent">
+
+  <!-- Header Navigation -->
+  <header class="header scrolled" id="home">
+    <div class="container header-container">
+      <a href="index.html" class="logo-link" aria-label="Apex Urban Realty Home">
+        <img src="images/logo.svg" alt="Apex Urban Realty Logo" class="logo-icon">
+        <span>Apex Urban</span>
+      </a>
+      
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <li><a href="index.html#home" class="nav-link">Home</a></li>
+        <li><a href="index.html?purpose=buy#properties" class="nav-link">Buy</a></li>
+        <li><a href="index.html?purpose=rent#properties" class="nav-link">Rent</a></li>
+        <li><a href="index.html#contact" class="nav-link">Sell</a></li>
+        <li><a href="index.html#properties" class="nav-link">Properties</a></li>
+        <li><a href="agent.html" class="nav-link active">Agent Panel</a></li>
+      </nav>
+      
+      <div class="nav-actions">
+        <span class="badge" id="header-agent-badge" style="background-color: hsl(150, 80%, 95%); color: hsl(150, 80%, 30%); font-family: var(--font-heading); font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.15);">Agent Mode</span>
+      </div>
+      
+      <button class="mobile-toggle" aria-label="Toggle Navigation Menu">
+        <i data-feather="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Login Gateway Overlay (Shown if logged out) -->
+  <div class="panel-login-overlay" id="agent-login-overlay" style="display: none;">
+    <div class="panel-login-card glass-panel">
+      <div class="panel-login-logo">
+        <img src="images/logo.svg" alt="Apex Urban Logo" style="width: 32px; height: 32px;">
+        <span>Apex Urban</span>
+      </div>
+      <span class="panel-login-tag">Agent Workspace</span>
+      <div class="panel-login-header">
+        <h1>Agent Portal Login</h1>
+        <p>Log in with your agent credentials to review client schedules and manage site tours.</p>
+      </div>
+      <div class="form-notification" id="login-notification" style="display: none; margin-bottom: 1.5rem;"></div>
+      <form id="agent-login-form">
+        <div class="form-group" style="text-align: left;">
+          <label for="login-email" style="font-weight: 500;">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="agent@apex.com" required>
+        </div>
+        <div class="form-group" style="text-align: left; margin-bottom: 1.75rem;">
+          <label for="login-password" style="font-weight: 500;">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: var(--radius-sm); background-color: hsl(150, 80%, 25%); border-color: hsl(150, 80%, 25%);">
+          <i data-feather="lock"></i>
+          <span>Secure Sign In</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard Main Workspace -->
+  <div class="panel-container" id="agent-workspace">
+    <!-- Sidebar Navigation -->
+    <aside class="panel-sidebar">
+      <div class="panel-nav-top">
+        <div style="padding: 0.5rem 1rem 1.5rem 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+          <h4 style="margin: 0; font-family: var(--font-heading); font-size: 1.1rem;" id="sidebar-agent-name">Loading...</h4>
+          <small style="color: var(--text-tertiary);" id="sidebar-agent-role">Principal Listing Advisor</small>
+        </div>
+        <nav class="panel-nav-list">
+          <button class="panel-nav-btn active" data-target="tab-overview">
+            <i data-feather="pie-chart"></i>
+            <span>Overview</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-consultations">
+            <i data-feather="users"></i>
+            <span>My Consultations</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-tasks">
+            <i data-feather="check-square"></i>
+            <span>Task Checklist</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-my-account" id="sidebar-my-account-btn">
+            <i data-feather="user"></i>
+            <span>My Account</span>
+          </button>
+        </nav>
+      </div>
+      <div class="panel-nav-bottom">
+        <hr class="panel-divider">
+        <button class="panel-nav-btn" id="agent-logout-btn" style="color: hsl(0, 84%, 60%);">
+          <i data-feather="log-out"></i>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="panel-main-content">
+
+      <!-- 1. Overview Tab -->
+      <section class="panel-tab-content active" id="tab-overview">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>Agent Performance Hub</h2>
+            <p>Monitor your assigned properties, consultations, and complete tasks.</p>
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="panel-stats-grid">
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="users"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-agent-assigned">0</span>
+              <span class="panel-stat-label">Assigned Clients</span>
+            </div>
+          </div>
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="clock"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-agent-pending">0</span>
+              <span class="panel-stat-label">Pending Tour Bookings</span>
+            </div>
+          </div>
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="check-square"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-agent-tasks">0</span>
+              <span class="panel-stat-label">Active Tasks</span>
+            </div>
+          </div>
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="smile"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-agent-completed">0</span>
+              <span class="panel-stat-label">Tours Completed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="panel-charts-grid" style="margin-top: 2rem;">
+          <div class="panel-chart-card">
+            <h3>Assigned Consultations Status</h3>
+            <div class="panel-chart-container">
+              <canvas id="chart-agent-status"></canvas>
+            </div>
+          </div>
+          <div class="panel-chart-card">
+            <h3>Task Completion rate</h3>
+            <div class="panel-chart-container">
+              <canvas id="chart-agent-tasks"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Consultations Tab -->
+      <section class="panel-tab-content" id="tab-consultations">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>My Assigned Consultations</h2>
+            <p>View your scheduled client tours, contact numbers, and write tour summaries.</p>
+          </div>
+        </div>
+
+        <div class="panel-table-card">
+          <div class="panel-table-wrapper">
+            <table class="panel-table" id="agent-bookings-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Client</th>
+                  <th>Contact Info</th>
+                  <th>Interest</th>
+                  <th>Notes & Timing</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="agent-bookings-tbody">
+                <tr><td colspan="7" style="text-align: center;">Loading assigned bookings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Task Checklist Tab -->
+      <section class="panel-tab-content" id="tab-tasks">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>Task Checklist & Organizer</h2>
+            <p>Add meeting reminders, contract tasks, or property evaluation chores.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: start;">
+          <div class="panel-table-card">
+            <h3>My Tasks</h3>
+            <div id="tasks-list-container" style="margin-top: 1rem;">
+              <!-- Loaded dynamically via JS -->
+              <p style="color: var(--text-secondary);">Loading tasks checklist...</p>
+            </div>
+          </div>
+
+          <div class="panel-chart-card">
+            <h3>Add New Task</h3>
+            <form id="task-create-form" style="margin-top: 1rem;">
+              <div class="form-group">
+                <label for="task-title">Task Description</label>
+                <input type="text" id="task-title" class="form-control" placeholder="e.g. Call Bandra Client to confirm slot" required>
+              </div>
+              <div class="form-group">
+                <label for="task-due">Due Date</label>
+                <input type="date" id="task-due" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; background-color: hsl(150, 80%, 25%); border-color: hsl(150, 80%, 25%);">
+                <i data-feather="plus"></i> Add Checklist Item
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. My Account Tab -->
+      <section class="panel-tab-content" id="tab-my-account">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>My Agent Profile</h2>
+            <p>Manage your listing advisor contact information and schedule availability.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+          <div class="panel-chart-card">
+            <h3>Professional Profile Card</h3>
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-top: 1rem;">
+              <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: hsl(150, 80%, 95%); color: hsl(150, 80%, 30%); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold;" id="agent-profile-initials">
+                ...
+              </div>
+              <div>
+                <h4 style="margin: 0; font-family: var(--font-heading); font-size: 1.3rem;" id="agent-profile-name">Loading...</h4>
+                <p style="margin: 0.25rem 0 0 0; color: hsl(150, 80%, 30%); font-weight: 500; font-size: 0.9rem;">Principal Listing Advisor</p>
+                <p style="margin: 0.25rem 0 0 0; color: var(--text-tertiary); font-size: 0.8rem;" id="agent-profile-email">...</p>
+              </div>
+            </div>
+
+            <div class="scrollable-overflow">
+              <h4 style="margin: 0 0 0.5rem 0; font-family: var(--font-heading); font-size: 1rem; color: var(--text-primary);">Advisor details</h4>
+              <div class="scrollable-item">
+                <span>Assigned Agent ID</span>
+                <span style="font-family: monospace; color: var(--text-tertiary);">AGENT-RK-036</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Specialization</span>
+                <span>Luxury Villas & Penthouses</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Direct Contact</span>
+                <span id="agent-profile-phone-label">+91 98765 43210</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Office Region</span>
+                <span>Mumbai, Maharashtra</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Service Tier Scope</span>
+                <span class="badge badge-premium" style="background-color: var(--accent-light); color: var(--accent);">VIP Accounts</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-chart-card">
+            <h3>Update Profile Information</h3>
+            <form id="agent-profile-form" style="margin-top: 1rem;">
+              <div class="form-group">
+                <label for="agent-name-field">Full Name</label>
+                <input type="text" id="agent-name-field" class="form-control" value="" placeholder="Loading..." required>
+              </div>
+              <div class="form-group">
+                <label for="agent-phone-field">Mobile Number</label>
+                <input type="text" id="agent-phone-field" class="form-control" value="" placeholder="Loading..." required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%; background-color: hsl(150, 80%, 25%); border-color: hsl(150, 80%, 25%);">
+                <i data-feather="save"></i> Save Profile
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Agent Update Consultation Modal -->
+  <div class="panel-modal-overlay" id="agent-booking-modal" style="display: none;">
+    <div class="panel-modal-card">
+      <div class="panel-modal-header">
+        <h3>Update Client Consultation</h3>
+        <button class="panel-modal-close" id="btn-close-agent-modal">&times;</button>
+      </div>
+      <form id="agent-booking-form-detail">
+        <input type="hidden" id="agent-booking-id-field">
+        <div class="panel-modal-body">
+          <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+            <h4 id="agent-detail-client-name" style="margin: 0; font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-primary);">Client Name</h4>
+            <p id="agent-detail-client-contact" style="margin: 0.25rem 0 0 0; color: var(--text-secondary); font-size: 0.85rem;">Client Details</p>
+            <p id="agent-detail-interest" style="margin: 0.25rem 0 0 0; font-size: 0.85rem;"><strong style="color: var(--text-primary);">Interest:</strong> Rent Apartment</p>
+            <p id="agent-detail-original-msg" style="margin: 0.75rem 0 0 0; padding: 0.75rem; border-left: 3px solid hsl(150, 80%, 30%); background: var(--bg-secondary); color: var(--text-secondary); font-size: 0.85rem; font-style: italic; white-space: pre-line;">Original Message</p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="agent-booking-status">Consultation Status</label>
+              <select id="agent-booking-status" class="form-control">
+                <option value="pending">Pending</option>
+                <option value="scheduled">Scheduled / Active</option>
+                <option value="completed">Completed / Signed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="agent-booking-notes">Advisor Tour Notes & Logs</label>
+              <textarea id="agent-booking-notes" class="form-control" rows="4" placeholder="Log details of the site visit, pricing negotiations, and feedback..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="panel-modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-agent-booking" style="padding: 0.6rem 1.2rem;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1.2rem; background-color: hsl(150, 80%, 25%); border-color: hsl(150, 80%, 25%);">Save Updates</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase configuration injection -->
+  <script src="backend/supabase.js"></script>
+  <!-- Main script containing login wrapper, task manager & consultations tracker -->
+  <script src="js/agent.js"></script>
+</body>
+</html>

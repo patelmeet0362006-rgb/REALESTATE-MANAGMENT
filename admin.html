@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Apex Urban Realty</title>
+  <meta name="description" content="Apex Urban Realty administrative control center. Manage properties, review consultations, and analyze site-wide analytics.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/panels.css">
+
+  <!-- Feather Icons & ChartJS & Supabase SDKs -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="panel-body" data-panel-type="admin">
+
+  <!-- Header Navigation -->
+  <header class="header scrolled" id="home">
+    <div class="container header-container">
+      <a href="index.html" class="logo-link" aria-label="Apex Urban Realty Home">
+        <img src="images/logo.svg" alt="Apex Urban Realty Logo" class="logo-icon">
+        <span>Apex Urban</span>
+      </a>
+      
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <li><a href="index.html#home" class="nav-link">Home</a></li>
+        <li><a href="index.html?purpose=buy#properties" class="nav-link">Buy</a></li>
+        <li><a href="index.html?purpose=rent#properties" class="nav-link">Rent</a></li>
+        <li><a href="index.html#contact" class="nav-link">Sell</a></li>
+        <li><a href="index.html#properties" class="nav-link">Properties</a></li>
+        <li><a href="admin.html" class="nav-link active">Admin Panel</a></li>
+      </nav>
+      
+      <div class="nav-actions">
+        <span class="badge badge-premium" id="header-admin-badge" style="font-family: var(--font-heading); font-weight: 600;">Admin Mode</span>
+      </div>
+      
+      <button class="mobile-toggle" aria-label="Toggle Navigation Menu">
+        <i data-feather="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Login Gateway Overlay (Shown if logged out) -->
+  <div class="panel-login-overlay" id="admin-login-overlay" style="display: none;">
+    <div class="panel-login-card glass-panel">
+      <div class="panel-login-logo">
+        <img src="images/logo.svg" alt="Apex Urban Logo" style="width: 32px; height: 32px;">
+        <span>Apex Urban</span>
+      </div>
+      <span class="panel-login-tag">Admin Portal</span>
+      <div class="panel-login-header">
+        <h1>Administrator Login</h1>
+        <p>Enter your credentials to access the administrative dashboard.</p>
+      </div>
+      <div class="form-notification" id="login-notification" style="display: none; margin-bottom: 1.5rem;"></div>
+      <form id="admin-login-form">
+        <div class="form-group" style="text-align: left;">
+          <label for="login-email" style="font-weight: 500;">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="admin@apex.com" required>
+        </div>
+        <div class="form-group" style="text-align: left; margin-bottom: 1.75rem;">
+          <label for="login-password" style="font-weight: 500;">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: var(--radius-sm);">
+          <i data-feather="lock"></i>
+          <span>Secure Sign In</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard Main Workspace -->
+  <div class="panel-container" id="admin-workspace">
+    <!-- Sidebar Navigation -->
+    <aside class="panel-sidebar">
+      <div class="panel-nav-top">
+        <div style="padding: 0.5rem 1rem 1.5rem 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+          <h4 style="margin: 0; font-family: var(--font-heading); font-size: 1.1rem;" id="sidebar-admin-name">Loading...</h4>
+          <small style="color: var(--text-tertiary);" id="sidebar-admin-role">System Administrator</small>
+        </div>
+        <nav class="panel-nav-list">
+          <button class="panel-nav-btn active" data-target="tab-overview">
+            <i data-feather="pie-chart"></i>
+            <span>Overview</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-listings">
+            <i data-feather="home"></i>
+            <span>Listings Manager</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-bookings">
+            <i data-feather="calendar"></i>
+            <span>Bookings & Leads</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-users">
+            <i data-feather="users"></i>
+            <span>Users & Payments</span>
+          </button>
+          <button class="panel-nav-btn" data-target="tab-my-account" id="sidebar-my-account-btn">
+            <i data-feather="user"></i>
+            <span>My Account</span>
+          </button>
+        </nav>
+      </div>
+      <div class="panel-nav-bottom">
+        <hr class="panel-divider">
+        <button class="panel-nav-btn" id="admin-logout-btn" style="color: hsl(0, 84%, 60%);">
+          <i data-feather="log-out"></i>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="panel-main-content">
+
+      <!-- 1. Overview Tab -->
+      <section class="panel-tab-content active" id="tab-overview">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>Overview Dashboard</h2>
+            <p>Real-time metrics, system health, and property statistics.</p>
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="panel-stats-grid">
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="dollar-sign"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-revenue">₹0</span>
+              <span class="panel-stat-label">Total Revenue</span>
+            </div>
+          </div>
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="home"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-properties">0</span>
+              <span class="panel-stat-label">Total Properties</span>
+            </div>
+          </div>
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="calendar"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-consultations">0</span>
+              <span class="panel-stat-label">Consultations Booked</span>
+            </div>
+          </div>
+          <div class="panel-stat-card">
+            <div class="panel-stat-icon"><i data-feather="users"></i></div>
+            <div class="panel-stat-info">
+              <span class="panel-stat-number" id="kpi-users">0</span>
+              <span class="panel-stat-label">Total Users</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="panel-charts-grid" style="margin-top: 2rem;">
+          <div class="panel-chart-card">
+            <h3>Revenue Growth (Premium Upgrades)</h3>
+            <div class="panel-chart-container">
+              <canvas id="chart-revenue"></canvas>
+            </div>
+          </div>
+          <div class="panel-chart-card">
+            <h3>Properties by Type</h3>
+            <div class="panel-chart-container">
+              <canvas id="chart-property-types"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-charts-grid" style="margin-top: 2rem; grid-template-columns: 1fr;">
+          <div class="panel-chart-card">
+            <h3>Consultation Bookings by Interest</h3>
+            <div class="panel-chart-container">
+              <canvas id="chart-consultations"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Listings Manager Tab -->
+      <section class="panel-tab-content" id="tab-listings">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>Listings Manager</h2>
+            <p>Manage standard and premium listings displayed across the website.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-add-property">
+            <i data-feather="plus"></i> Add Property
+          </button>
+        </div>
+
+        <div class="panel-table-card">
+          <div class="panel-table-wrapper">
+            <table class="panel-table" id="properties-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Location</th>
+                  <th>Type / Purpose</th>
+                  <th>Price</th>
+                  <th>Specs</th>
+                  <th>Tier</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="properties-tbody">
+                <tr><td colspan="9" style="text-align: center;">Loading property listings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Bookings & Leads Tab -->
+      <section class="panel-tab-content" id="tab-bookings">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>Bookings & Consultations</h2>
+            <p>Track site visits, view client consultation messages, and assign agents.</p>
+          </div>
+        </div>
+
+        <div class="panel-table-card">
+          <div class="panel-table-wrapper">
+            <table class="panel-table" id="bookings-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Client</th>
+                  <th>Contact info</th>
+                  <th>Interest</th>
+                  <th>Requested Date & Slot</th>
+                  <th>Assigned Agent</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-tbody">
+                <tr><td colspan="8" style="text-align: center;">Loading bookings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Users & Payments Tab -->
+      <section class="panel-tab-content" id="tab-users">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>Users & Premium Upgrades</h2>
+            <p>Monitor regular members, premium subscribers, and secure financial logs.</p>
+          </div>
+        </div>
+
+        <div class="panel-charts-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 2rem;">
+          <div class="panel-table-card">
+            <h3>Registered Customers</h3>
+            <div class="panel-table-wrapper">
+              <table class="panel-table" id="users-table">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Tier</th>
+                    <th>Joined</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody">
+                  <tr><td colspan="4" style="text-align: center;">Loading users...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel-table-card">
+            <h3>Payment Logs (₹12 Gateway Upgrade)</h3>
+            <div class="panel-table-wrapper">
+              <table class="panel-table" id="payments-table">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>UTR / ID</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="payments-tbody">
+                  <tr><td colspan="5" style="text-align: center;">Loading payments...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. My Account Tab -->
+      <section class="panel-tab-content" id="tab-my-account">
+        <div class="panel-header-row">
+          <div class="panel-title-block">
+            <h2>My Administrative Account</h2>
+            <p>View your administrator profile details and access security controls.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+          <div class="panel-chart-card">
+            <h3>System Profile Card</h3>
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-top: 1rem;">
+              <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold;" id="admin-profile-initials">
+                ...
+              </div>
+              <div>
+                <h4 style="margin: 0; font-family: var(--font-heading); font-size: 1.3rem;" id="admin-profile-name">Loading...</h4>
+                <p style="margin: 0.25rem 0 0 0; color: var(--primary); font-weight: 500; font-size: 0.9rem;">System Administrator</p>
+                <p style="margin: 0.25rem 0 0 0; color: var(--text-tertiary); font-size: 0.8rem;" id="admin-profile-email">...</p>
+              </div>
+            </div>
+
+            <div class="scrollable-overflow">
+              <h4 style="margin: 0 0 0.5rem 0; font-family: var(--font-heading); font-size: 1rem; color: var(--text-primary);">Administrative Credentials</h4>
+              <div class="scrollable-item">
+                <span>Database Client URL</span>
+                <span style="font-family: monospace; color: var(--text-tertiary);">qpwynaxfsyybpfznuivg.supabase.co</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Access Level</span>
+                <span class="badge badge-premium">Full Root Access</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Support Contact</span>
+                <span>+91 99999 88888</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Region Scope</span>
+                <span>India (Mumbai, Delhi, Gujarat)</span>
+              </div>
+              <div class="scrollable-item">
+                <span>Session Status</span>
+                <span style="color: hsl(150, 80%, 30%); font-weight: 600;">Active Session</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-chart-card">
+            <h3>Update Profile Information</h3>
+            <form id="admin-profile-form" style="margin-top: 1rem;">
+              <div class="form-group">
+                <label for="admin-name-field">Full Name</label>
+                <input type="text" id="admin-name-field" class="form-control" value="" placeholder="Loading..." required>
+              </div>
+              <div class="form-group">
+                <label for="admin-phone-field">Phone Number</label>
+                <input type="text" id="admin-phone-field" class="form-control" value="" placeholder="Loading..." required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
+                <i data-feather="save"></i> Save Profile
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Add/Edit Property Modal -->
+  <div class="panel-modal-overlay" id="property-modal" style="display: none;">
+    <div class="panel-modal-card">
+      <div class="panel-modal-header">
+        <h3 id="property-modal-title">Add Property Listing</h3>
+        <button class="panel-modal-close" id="btn-close-property-modal">&times;</button>
+      </div>
+      <form id="property-form">
+        <input type="hidden" id="property-id-field">
+        <div class="panel-modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="property-title">Property Title</label>
+              <input type="text" id="property-title" class="form-control" placeholder="e.g. Bandra Waterfront Villa" required>
+            </div>
+          </div>
+          <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="property-type">Property Type</label>
+              <select id="property-type" class="form-control">
+                <option value="villa">Villa</option>
+                <option value="penthouse">Penthouse</option>
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="property-purpose">Purpose</label>
+              <select id="property-purpose" class="form-control">
+                <option value="buy">For Sale (Buy)</option>
+                <option value="rent">For Rent</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="property-price">Price (in INR)</label>
+              <input type="number" id="property-price" class="form-control" placeholder="e.g. 45000000" required>
+            </div>
+            <div class="form-group">
+              <label for="property-badge">Status Badge</label>
+              <input type="text" id="property-badge" class="form-control" placeholder="e.g. Hot, New, Exclusive">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="property-location">Location Address</label>
+              <input type="text" id="property-location" class="form-control" placeholder="e.g. Bandra West, Mumbai, Maharashtra" required>
+            </div>
+          </div>
+          <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="property-beds">Bedrooms</label>
+              <input type="number" id="property-beds" class="form-control" min="1" required>
+            </div>
+            <div class="form-group">
+              <label for="property-baths">Bathrooms</label>
+              <input type="number" id="property-baths" class="form-control" min="1" step="0.5" required>
+            </div>
+            <div class="form-group">
+              <label for="property-area">Area (Sq. Ft.)</label>
+              <input type="number" id="property-area" class="form-control" min="100" required>
+            </div>
+          </div>
+          <div class="form-row" style="display: grid; grid-template-columns: 1.5fr 0.5fr; gap: 1rem; align-items: center; margin-top: 1rem;">
+            <div class="form-group">
+              <label for="property-image">Image Filename/URL</label>
+              <input type="text" id="property-image" class="form-control" value="images/listing-1.png" required>
+            </div>
+            <div class="form-group" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; height: 100%;">
+              <label for="property-premium" style="margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="property-premium" style="width: 18px; height: 18px;">
+                Premium
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="panel-modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-property" style="padding: 0.6rem 1.2rem;">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-property" style="padding: 0.6rem 1.2rem;">Save Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Booking Details and Update Modal -->
+  <div class="panel-modal-overlay" id="booking-modal" style="display: none;">
+    <div class="panel-modal-card">
+      <div class="panel-modal-header">
+        <h3>Update Consultation booking</h3>
+        <button class="panel-modal-close" id="btn-close-booking-modal">&times;</button>
+      </div>
+      <form id="booking-form">
+        <input type="hidden" id="booking-id-field">
+        <div class="panel-modal-body">
+          <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+            <h4 id="detail-client-name" style="margin: 0; font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-primary);">Client Name</h4>
+            <p id="detail-client-contact" style="margin: 0.25rem 0 0 0; color: var(--text-secondary); font-size: 0.85rem;">Client Details</p>
+            <p id="detail-interest" style="margin: 0.25rem 0 0 0; font-size: 0.85rem;"><strong style="color: var(--text-primary);">Interest:</strong> Buy Penthouse</p>
+            <p id="detail-original-msg" style="margin: 0.75rem 0 0 0; padding: 0.75rem; border-left: 3px solid var(--primary); background: var(--bg-secondary); color: var(--text-secondary); font-size: 0.85rem; font-style: italic; white-space: pre-line;">Original Message</p>
+          </div>
+          <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="booking-status">Follow-up Status</label>
+              <select id="booking-status" class="form-control">
+                <option value="pending">Pending</option>
+                <option value="scheduled">Scheduled / Assigned</option>
+                <option value="completed">Tour Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="booking-agent">Assign Agent</label>
+              <select id="booking-agent" class="form-control">
+                <option value="">Unassigned</option>
+                <!-- Populated dynamically via JS -->
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="booking-notes">Agent Internal Notes</label>
+              <textarea id="booking-notes" class="form-control" rows="4" placeholder="Enter status notes, offer details, meeting coordinates, or feedback here..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="panel-modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-booking" style="padding: 0.6rem 1.2rem;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1.2rem;">Save Updates</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase configuration injection -->
+  <script src="backend/supabase.js"></script>
+  <!-- Main script containing login wrapper & workspace manager -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

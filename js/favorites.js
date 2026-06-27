@@ -65,8 +65,7 @@ async function loadFavorites() {
   const { data, error } = await client
     .from("user_favorites")
     .select("property_id")
-    .eq("user_email", currentUser.email)
-    .eq("is_premium", false);
+    .eq("user_email", currentUser.email);
 
   if (error) throw error;
 
@@ -154,8 +153,7 @@ async function removeFavorite(propertyId) {
       .from("user_favorites")
       .delete()
       .eq("user_email", currentUser.email)
-      .eq("property_id", propertyId)
-      .eq("is_premium", false);
+      .eq("property_id", propertyId);
 
     if (error) throw error;
 

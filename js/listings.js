@@ -157,6 +157,56 @@ async function initListings() {
   const listingsGrid = document.querySelector('.listings-grid');
   if (!listingsGrid) return;
 
+  // Load properties from Supabase if connected
+  if (typeof supabaseClient !== 'undefined') {
+    try {
+      let { data: dbProperties, error: dbErr } = await supabaseClient
+        .from('properties')
+        .select('*');
+        
+      if (!dbErr && dbProperties) {
+        if (dbProperties.length > 0) {
+          // Replace listingsData array contents with db records
+          listingsData.length = 0;
+          dbProperties.forEach(p => {
+            listingsData.push({
+              id: Number(p.id),
+              title: p.title,
+              type: p.type,
+              purpose: p.purpose,
+              price: Number(p.price),
+              location: p.location,
+              beds: p.beds,
+              baths: Number(p.baths),
+              area: p.area,
+              image: p.image,
+              badge: p.badge || ""
+            });
+          });
+        } else {
+          // Seed standard properties
+          const seedData = listingsData.map(item => ({
+            id: item.id,
+            title: item.title,
+            type: item.type,
+            purpose: item.purpose,
+            price: item.price,
+            location: item.location,
+            beds: item.beds,
+            baths: item.baths,
+            area: item.area,
+            image: item.image,
+            badge: item.badge
+          }));
+          
+          await supabaseClient.from('properties').insert(seedData);
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching or seeding listings in Supabase:", e);
+    }
+  }
+
   // Load favorites from Supabase if logged in. Guests are prompted to sign in.
   const activeRegularUser = getActiveRegularUser();
   if (activeRegularUser && typeof supabaseClient !== 'undefined') {
@@ -165,8 +215,7 @@ async function initListings() {
       const { data, error } = await supabaseClient
         .from('user_favorites')
         .select('property_id')
-        .eq('user_email', email)
-        .eq('is_premium', false);
+        .eq('user_email', email);
       if (!error && data) {
         dbFavorites = data.map(item => Number(item.property_id)).filter(Number.isFinite);
       } else {
@@ -462,8 +511,7 @@ async function toggleRegularFavorite(propertyId, buttonElement) {
         .from('user_favorites')
         .insert({
           user_email: email,
-          property_id: propertyId,
-          is_premium: false
+          property_id: propertyId
         });
       if (error) {
         console.error("Error adding favorite to Supabase:", error);
@@ -485,8 +533,7 @@ async function toggleRegularFavorite(propertyId, buttonElement) {
         .from('user_favorites')
         .delete()
         .eq('user_email', email)
-        .eq('property_id', propertyId)
-        .eq('is_premium', false);
+        .eq('property_id', propertyId);
       if (error) {
         console.error("Error removing favorite from Supabase:", error);
         alert(`Could not remove favorite: ${getListingDbErrorMessage(error)}`);
